@@ -1,23 +1,84 @@
 # Swarm-SLAM: Sparse Decentralized Collaborative Simultaneous Localization and Mapping Framework for Multi-Robot Systems <!--![Build Status](https://github.com/MISTLab/Swarm-SLAM/actions/workflows/main.yml/badge.svg)-->
 
-![Swarm-SLAM Overview](media/system-overview.svg)
+Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentation/html/md_startup-instructions.html) to install, build and run Swarm-SLAM.
 
-Look up our [Documentation](https://lajoiepy.github.io/cslam_documentation/html/index.html) and our [Start-up instructions](https://lajoiepy.github.io/cslam_documentation/html/md_startup-instructions.html)!
+## Swarm-SLAM Replication
 
-<p align="center">
-  <img src="media/graco_pg.gif" alt="Swarm-SLAM on GRACO dataset" width="48%" />
-  <img src="media/graco_pc.gif" alt="Swarm-SLAM on GRACO dataset" width="48%" />
-</p>
+Startup:
 
-[Swarm-SLAM](https://ieeexplore.ieee.org/document/10321649) is an open-source C-SLAM system designed to be scalable, flexible, decentralized, and sparse, which are all key properties in swarm robotics. Our system supports lidar, stereo, and RGB-D sensing, and it includes a novel inter-robot loop closure prioritization technique that reduces inter-robot communication and accelerates the convergence.
-
-To clone Swarm-SLAM:
-```
+Installs
+```bash
 sudo apt install python3-vcstool
-git clone https://github.com/MISTLab/Swarm-SLAM.git
+sudo apt install python3-pybind11
+sudo apt install python3-rosdep python3-colcon-common-extensions
+```   
+ROS2
+```bash
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+
+sudo apt update
+sudo apt upgrade
+sudo apt install ros-dev-tools ros-jazzy-desktop
+
+echo "source /opt/ros/jazzy/setup.bash" >>  ~/.bashrc
+```
+
+Clone repo
+```bash
+git clone https://github.com/Skuddo/Swarm-SLAM.git
 cd Swarm-SLAM
 mkdir src
 vcs import src < cslam.repos
+```
+
+Miniconda
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+source ~/miniconda3/bin/activate
+conda init --all
+conda create --name cslam
+conda activate cslam
+sudo apt install python3-pip
+pip install -r requirements.txt 
+```
+
+GTSam
+```bash
+git clone https://github.com/borglab/gtsam.git
+cd gtsam
+git checkout 4.1.1
+mkdir build
+cd build
+cmake ..
+make install
+```
+
+TEASER++
+```bash
+git clone https://github.com/Skuddo/TEASER-plusplus.git
+cd TEASER-plusplus 
+git checkout develop
+mkdir build && cd build
+cmake .. && make
+sudo make install 
+```
+
+Build
+```bash
+cd ~/Swarm-SLAM
+mkdir src
+cd src
+conda activate cslam
+colcon build
 ```
 
 Packages summary:
@@ -26,20 +87,4 @@ Packages summary:
 - [cslam_experiments](https://github.com/lajoiepy/cslam_experiments): contains examples of launch files and configurations for different setups;
 - [cslam_visualization](https://github.com/lajoiepy/cslam_visualization): contains an online (optional) visualization tool to run on your base station to monitor the mapping progress.
 
-Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentation/html/md_startup-instructions.html) to install, build and run Swarm-SLAM.
-
-How to cite [our paper](https://ieeexplore.ieee.org/document/10321649):
-```
-@ARTICLE{lajoieSwarmSLAM,
-  author={Lajoie, Pierre-Yves and Beltrame, Giovanni},
-  journal={IEEE Robotics and Automation Letters}, 
-  title={Swarm-SLAM: Sparse Decentralized Collaborative Simultaneous Localization and Mapping Framework for Multi-Robot Systems}, 
-  year={2024},
-  volume={9},
-  number={1},
-  pages={475-482},
-  doi={10.1109/LRA.2023.3333742}
-}
-
-```
 
