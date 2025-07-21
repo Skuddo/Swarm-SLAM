@@ -2,32 +2,19 @@
 
 Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentation/html/md_startup-instructions.html) to install, build and run Swarm-SLAM.
 
-## Swarm-SLAM Replication
+## Swarm-SLAM setup
 
-Startup:
+### System installation:
 
-Clone repo
-```bash
-sudo apt install python3-vcstool
-git clone https://github.com/Skuddo/Swarm-SLAM.git
-cd Swarm-SLAM
-mkdir src && cd src
-vcs import src < cslam.repos
-pip install --break-system-packages -r requirements.txt
-```
+**Installed on WSl2 Ubuntu-24.04**
 
-Installs
-```bash
-sudo apt install python3-pybind11
-sudo apt install python3-rosdep python3-colcon-common-extensions
-```
 
 ROS2
 ```bash
-sudo apt install software-properties-common
+sudo apt install software-properties-common curl -y
 sudo add-apt-repository universe
+sudo apt update
 
-sudo apt update && sudo apt install curl -y
 export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
 curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb"
 sudo dpkg -i /tmp/ros2-apt-source.deb
@@ -36,11 +23,12 @@ sudo apt update
 sudo apt upgrade
 sudo apt install ros-dev-tools ros-jazzy-desktop
 
+# Make sure that ROS2 is sourced in each shell
 echo "source /opt/ros/jazzy/setup.bash" >>  ~/.bashrc
 ```
 
 
-Miniconda
+##### Miniconda install and init
 ```bash
 mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
@@ -49,46 +37,87 @@ rm ~/miniconda3/miniconda.sh
 source ~/miniconda3/bin/activate
 conda init --all
 conda create --name cslam
-conda activate cslam
-sudo apt install python3-pip
-pip install -r requirements.txt 
 ```
 
-GTSam
+##### Clone repo
 ```bash
+sudo apt install python3-pip python3-vcstool
+cd ~
+git clone https://github.com/Skuddo/Swarm-SLAM.git
+cd Swarm-SLAM
+mkdir src
+vcs import src < cslam.repos
+conda activate cslam
+pip install --break-system-packages -r requirements.txt
+pip install pybind11
+```
+
+##### GTSam
+```bash
+cd ~
 git clone https://github.com/borglab/gtsam.git
 cd gtsam
 git checkout 4.1.1
 mkdir build
 cd build
 cmake ..
-make install
+sudo make install
 ```
 
-TEASER++
+##### TEASER++ python bindings (fixed branch custom repo)
 ```bash
+cd ~
 git clone https://github.com/Skuddo/TEASER-plusplus.git
 cd TEASER-plusplus 
 git checkout develop
 mkdir build && cd build
+conda activate cslam
 cmake .. && make
-sudo make teaserpp_python
+make teaserpp_python
 sudo make install 
 ```
 
-Build
+##### Get ROS2 dependencies
 ```bash
 cd ~/Swarm-SLAM
-mkdir src
+sudo apt install python3-rosdep python3-colcon-common-extensions
+conda activate cslam
+sudo rosdep init
+rosdep update
+rosdep install --from-paths src -y --ignore-src --rosdistro jazzy
+```
+
+##### Build repo
+```bash
+cd ~/Swarm-SLAM
 cd src
 conda activate cslam
 colcon build
+
+# Make sure the project is sourced in each shell
+echo "source ~/Swarm-SLAM/src/install/setup.bash" >>  ~/.bashrc
 ```
+
+#### Fixes
+Add these lines to your .bashrc if wsl keeps adding windows pyenv to your wsl path
+Modify the grep argument (pyenv paths) if your pyenv main directory is elsewhere
+
+```bash
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/mnt/c/Users/.*/.pyenv/pyenv-win/shims' | paste -sd ':' -)
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/mnt/c/Users/.*/.pyenv/pyenv-win/bin' | paste -sd ':' -)
+```
+
+### Replication
+
+```bash
+ros2 launch cslam_experiments kitti360_stereo.launch.py 
+```
+
 
 Packages summary:
 - [cslam](https://github.com/lajoiepy/cslam): contains the Swarm-SLAM nodes;
 - [cslam_interfaces](https://github.com/lajoiepy/cslam_interfaces): contains the custom ROS 2 messages;
-- [cslam_experiments](https://github.com/lajoiepy/cslam_experiments): contains examples of launch files and configurations for different setups;
+- [cslam_experiments](https://github.com/Skuddo/cslam_experiments): contains examples of launch files and configurations for different setups;
 - [cslam_visualization](https://github.com/lajoiepy/cslam_visualization): contains an online (optional) visualization tool to run on your base station to monitor the mapping progress.
 
 
