@@ -33,7 +33,7 @@ Clone repo
 ```bash
 git clone https://github.com/Skuddo/Swarm-SLAM.git
 cd Swarm-SLAM
-mkdir src
+mkdir src && cd src
 vcs import src < cslam.repos
 ```
 
@@ -69,6 +69,7 @@ cd TEASER-plusplus
 git checkout develop
 mkdir build && cd build
 cmake .. && make
+sudo make teaserpp_python
 sudo make install 
 ```
 

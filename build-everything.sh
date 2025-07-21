@@ -36,7 +36,8 @@ export LC_ALL=en_US.UTF-8
 declare -A REPOS=(
   ["cslam"]="https://github.com/lajoiepy/cslam.git"
   ["cslam_interfaces"]="https://github.com/lajoiepy/cslam_interfaces.git"
-  ["cslam_experiments"]="https://github.com/lajoiepy/cslam_experiments.git"
+  ["cslam_experiments"]="https://github.com/Skuddo/cslam_experiments.git"
+  ["cslam_visualization"]="https://github.com/lajoiepy/cslam_visualization.git"
   ["gtsam"]="https://github.com/borglab/gtsam.git"
 )
 
