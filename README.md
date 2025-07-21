@@ -6,12 +6,22 @@ Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentatio
 
 Startup:
 
-Installs
+Clone repo
 ```bash
 sudo apt install python3-vcstool
+git clone https://github.com/Skuddo/Swarm-SLAM.git
+cd Swarm-SLAM
+mkdir src && cd src
+vcs import src < cslam.repos
+pip install --break-system-packages -r requirements.txt
+```
+
+Installs
+```bash
 sudo apt install python3-pybind11
 sudo apt install python3-rosdep python3-colcon-common-extensions
-```   
+```
+
 ROS2
 ```bash
 sudo apt install software-properties-common
@@ -29,13 +39,6 @@ sudo apt install ros-dev-tools ros-jazzy-desktop
 echo "source /opt/ros/jazzy/setup.bash" >>  ~/.bashrc
 ```
 
-Clone repo
-```bash
-git clone https://github.com/Skuddo/Swarm-SLAM.git
-cd Swarm-SLAM
-mkdir src && cd src
-vcs import src < cslam.repos
-```
 
 Miniconda
 ```bash
