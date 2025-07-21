@@ -113,6 +113,17 @@ export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/mnt/c/Users/.*/.pyenv/pyenv
 ros2 launch cslam_experiments kitti360_stereo.launch.py 
 ```
 
+### Utilities
+#### split_kitti_color_to_ros2_bags.py
+Split the raw kitti color sequences into batches as ROS2 bags
+Assuming a symlink in cslam_experiments\data\pointing to the folder containg the KITTI sequences
+
+```bash
+python3 split_kitti_color_to_ros2_bags.py \
+  --dataset ~/Swarm-SLAM/src/cslam_experiments/data/kitti_color/sequences/00 \
+  --output_dir ~/Swarm-SLAM/src/cslam_experiments/data/KITTI00_5robots \
+  --robots 3
+```
 
 Packages summary:
 - [cslam](https://github.com/lajoiepy/cslam): contains the Swarm-SLAM nodes;
