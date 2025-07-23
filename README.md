@@ -8,7 +8,6 @@ Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentatio
 
 **Installed on WSl2 Ubuntu-24.04**
 
-
 ROS2
 ```bash
 sudo apt install software-properties-common curl -y
@@ -109,26 +108,24 @@ export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/mnt/c/Users/.*/.pyenv/pyenv
 
 ### Replication
 
+>> T1 - CSLAM run 1
 ```bash
-ros2 launch cslam_experiments kitti360_stereo.launch.py 
+ros2 launch cslam_experiments kitti_stereo.launch.py robot_id:=0 bag_start_delay:=10.0
+```
+>> T3 - visualize
+```bash
+ros2 launch cslam_visualization visualization.launch.py
 ```
 
-### Utilities
-#### split_kitti_color_to_ros2_bags.py
-Split the raw kitti color sequences into batches as ROS2 bags
-Assuming a symlink in cslam_experiments\data\pointing to the folder containg the KITTI sequences
-
-```bash
-python3 split_kitti_color_to_ros2_bags.py \
-  --dataset ~/Swarm-SLAM/src/cslam_experiments/data/kitti_color/sequences/00 \
-  --output_dir ~/Swarm-SLAM/src/cslam_experiments/data/KITTI00_5robots \
-  --robots 3
-```
+## Other repos used
 
 Packages summary:
 - [cslam](https://github.com/lajoiepy/cslam): contains the Swarm-SLAM nodes;
 - [cslam_interfaces](https://github.com/lajoiepy/cslam_interfaces): contains the custom ROS 2 messages;
 - [cslam_experiments](https://github.com/Skuddo/cslam_experiments): contains examples of launch files and configurations for different setups;
 - [cslam_visualization](https://github.com/lajoiepy/cslam_visualization): contains an online (optional) visualization tool to run on your base station to monitor the mapping progress.
+- [GTSAM](https://github.com/borglab/gtsam): Smoothhing and mapping lib
+- [TEASER++](https://github.com/Skuddo/TEASER-plusplus): package for lidar points (custom)
+- [CosPlace](https://github.com/gmberton/CosPlacen): NN model for images
 
 

@@ -1,0 +1,35 @@
+ros2 bag play KITTI00-0/KITTI00-0_0.db3 --clock --use-sim-time --remap \
+    "/camera2/left/image_raw:=stereo_camera/left/image_rect_color" \
+    "/camera3/right/image_raw:=stereo_camera/right/image_rect_color" \
+    "/camera2/left/camera_info:=stereo_camera/left/camera_info" \
+    "/camera3/right/camera_info:=stereo_camera/right/camera_info" \
+    "/car/base/odom:=odom" \
+    "/car/base/odom_path:=odom_path" \
+
+
+ros2 bag play KITTI-00-bag_0.db3 \
+--remap \
+"/camera2/left/image_raw:=stereo_camera/left/image_rect_color" \
+"/camera3/right/image_raw:=stereo_camera/right/image_rect_color" \
+"/camera2/left/camera_info:=stereo_camera/left/camera_info" \
+"/camera3/right/camera_info:=stereo_camera/right/camera_info" \
+"/car/base/odom:=odom" \
+"/car/base/odom_path:=odom_path" \
+--start-offset 235.29
+
+ros2 bag record -o robot1_bag \
+    /stereo_camera/left/image_rect_color \
+    /stereo_camera/right/image_rect_color \
+    /stereo_camera/left/camera_info \
+    /stereo_camera/right/camera_info \
+    /odom \
+    /odom_path \
+    --storage sqlite3
+
+ros2 launch cslam_experiments kitti_stereo.launch.py bag_start_delay:=10.0
+
+ros2 launch cslam_visualization visualization.launch.py
+
+ros2 bag play KITTI00-0_0.db3  \
+/stereo_camera/left/image_rect_color \
+/stereo_camera/right/image_rect_color
