@@ -54,7 +54,7 @@ cd Swarm-SLAM
 mkdir src
 vcs import src < cslam.repos
 conda activate cslam
-pip install --break-system-packages -r requirements.txt
+pip install -r requirements.txt
 pip install pybind11
 ```
 
