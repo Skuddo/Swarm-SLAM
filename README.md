@@ -8,22 +8,29 @@ Follow the [start-up instructions](https://lajoiepy.github.io/cslam_documentatio
 
 **Installed on WSl2 Ubuntu-24.04**
 
-ROS2
+ROS2 HUMBLE
 ```bash
+locale
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+locale
+
 sudo apt install software-properties-common curl -y
 sudo add-apt-repository universe
 sudo apt update
 
 export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
-curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb"
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" # If using Ubuntu derivates use $UBUNTU_CODENAME
 sudo dpkg -i /tmp/ros2-apt-source.deb
 
 sudo apt update
 sudo apt upgrade
-sudo apt install ros-dev-tools ros-jazzy-desktop
+sudo apt install ros-humble-desktop ros-dev-tools 
 
 # Make sure that ROS2 is sourced in each shell
-echo "source /opt/ros/jazzy/setup.bash" >>  ~/.bashrc
+echo "source /opt/ros/humble/setup.bash" >>  ~/.bashrc
 ```
 
 
