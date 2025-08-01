@@ -40,7 +40,7 @@ conda create --name cslam
 
 ##### Clone repo
 ```bash
-sudo apt install python3-pip python3-vcstool
+sudo apt install python3-pip python3-vcstool python3-pybind11
 cd ~
 git clone https://github.com/Skuddo/Swarm-SLAM.git
 cd Swarm-SLAM
@@ -48,7 +48,6 @@ mkdir src
 vcs import src < cslam.repos
 conda activate cslam
 pip install --break-system-packages -r requirements.txt
-pip install pybind11
 ```
 
 ##### GTSam
@@ -110,7 +109,7 @@ export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/mnt/c/Users/.*/.pyenv/pyenv
 
 >> T1 - CSLAM run 1
 ```bash
-ros2 launch cslam_experiments kitti_stereo.launch.py robot_id:=0 bag_start_delay:=10.0
+ros2 launch cslam_experiments kitti_stereo.launch.py bag_start_delay:=10.0
 ```
 >> T3 - visualize
 ```bash
